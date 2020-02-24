@@ -1,14 +1,26 @@
-// Download the helper library from https://www.twilio.com/docs/node/install
-// Your Account Sid and Auth Token from twilio.com/console
-// DANGER! This is insecure. See http://twil.io/secure
-const accountSid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-const authToken = 'your_auth_token';
-const client = require('twilio')(accountSid, authToken);
+const accountSid = process.env.TWILIO_SID;
+const authToken = process.env.TWILIO_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+const nasaAPI = process.env.NASA_API;
+const fetch = require("node-fetch");
+const http = require('http');
+const hostname = '127.0.0.1';
+const port = 3000;
+
 
 client.messages
-  .create({
-     body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-     from: '+15017122661',
-     to: '+15558675310'
-   })
-  .then(message => console.log(message.sid));
+	.create({
+		body: 'Hello! This is nasa mars rover',
+		from: process.env.number,
+		to: process.env.cell
+	})
+	.then(message => console.log(message.sid));
+// const server = http.createServer((req, res) => {
+// 	res.statusCode = 200;
+// 	res.setHeader('Content-Type', 'text/plain');
+// 	res.end('Hello World');
+// });
+
+// server.listen(port, hostname, () => {
+// 	console.log(`Server running at http://${authToken}:${port}/`);
+// });
