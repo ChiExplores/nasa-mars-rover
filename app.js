@@ -5,27 +5,26 @@ const accountSid = env.TWILIO_SID
 const authToken = env.TWILIO_TOKEN
 const client = require("twilio")(accountSid, authToken);
 const nasaAPI = env.NASA_AUTH;
-// const fetch = require("node-fetch");
-const http = require('http');
-const hostname = '127.0.0.1';
-const port = env.PORT;
+const fetch = require("node-fetch");
+let img = void 0;
 
+async function getMarsRoverAsync(){
+	let response = await fetch('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&camera=fhaz&api_key=DEMO_KEY ');
+	let data = await response.json()
+	return data;
+}
 
-// client.messages
-// 	.create({
-// 		body: 'HELLO, THIS IS CHI',
-// 		from: +15744018284,
-// 		to: +4159177690
-// 	})
-// 	.then(message => console.log(message.sid));
+getMarsRoverAsync()
+.then(data => sendMsg(data.photos[0].img_src))
 
-const server = http.createServer((req, res) => {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/plain');
-	res.end('Hello World');
-});
+sendMsg = (data) => {
+	client.messages
+		.create({
+			body: 'HELLO, THIS IS IMAGE FROM MARS ROVER',
+			from: +15744018284,
+			mediaUrl: [data],
+			to: +4159177690
+		})
+		.then(message => console.log(message.sid));
+}
 
-server.listen(port, hostname, () => {
-	console.log(`Server running at http://${hostname}:${port}/`);
-});
-console.log(`${port}`)
