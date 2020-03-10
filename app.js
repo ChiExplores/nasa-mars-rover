@@ -32,10 +32,11 @@ let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 let getPhoto = async function getMarsRoverAsync(e) {
 	let roverName = e.target.id
 	console.log(e.target.id)
-	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=1001&camera=fhaz&api_key=${nasaAPI}`);
+	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=100&camera=NAVCAM&api_key=${nasaAPI}`);
 	let data = await response.json()
 	// return data;
-	console.log(data)
+	console.log(data.photos)
+	console.log(data.photos.length)
 }
 
 document.getElementById("spirit").addEventListener("click", getPhoto);
