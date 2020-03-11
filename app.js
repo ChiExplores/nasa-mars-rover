@@ -27,16 +27,24 @@ let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 // 			to: +4146781466
 // 		})
 
-
+let insertPhotos = (photoData) => {
+	console.log(photoData[0].img_src)
+	var img = document.createElement("IMAGE");
+	var photo = photoData[0].img_src;  // Create a <button> element
+	img.innerHTML = `<img src=${photo} alt=\"Italian Trulli\"/>`;
+	console.log(document.querySelector(".col-sm.photo"))               // Insert text
+	document.querySelector(".photo").appendChild(img);
+}
 
 let getPhoto = async function getMarsRoverAsync(e) {
 	let roverName = e.target.id
 	console.log(e.target.id)
-	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=100&camera=NAVCAM&api_key=${nasaAPI}`);
+	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=1000&camera=NAVCAM&api_key=${nasaAPI}`);
 	let data = await response.json()
 	// return data;
-	console.log(data.photos)
+	console.log(data)
 	console.log(data.photos.length)
+	insertPhotos(data.photos);
 }
 
 document.getElementById("spirit").addEventListener("click", getPhoto);
