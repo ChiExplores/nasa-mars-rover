@@ -11,10 +11,6 @@ let camera = ['fhaz',];
 let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 
 //Try doing it promises 
-
-
-
-
 // getMarsRoverAsync()
 // 	.then(data => sendMsg(data.photos[0].img_src))
 
@@ -28,22 +24,34 @@ let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 // 		})
 
 let insertPhotos = (photoData) => {
-	console.log(photoData[0].img_src)
+	console.log(photoData)
+	var photo = photoData[0].img_src;
+
 	var img = document.createElement("IMAGE");
-	var photo = photoData[0].img_src;  // Create a <button> element
-	img.innerHTML = `<img src=${photo} alt=\"Italian Trulli\"/>`;
-	console.log(document.querySelector(".col-sm.photo"))               // Insert text
+	var roverName = `photo from ${photoData[0].rover.name}`;
+	// img.src = photo;
+	img.innerHTML = `<img src=${photo} alt=${roverName} />`;
+	// img.alt = roverName
+	// img.setAttribute('src', photo)
+	// img.setAttribute('alt', roverName)
+	// console.log(img)
+	// console.log(document.querySelector(".photo"))
 	document.querySelector(".photo").appendChild(img);
+}
+
+function displayInformation(){
+	
+}
+
+function getSol(max) {
+	return Math.floor(Math.random() * Math.floor(max));
 }
 
 let getPhoto = async function getMarsRoverAsync(e) {
 	let roverName = e.target.id
-	console.log(e.target.id)
-	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=1000&camera=NAVCAM&api_key=${nasaAPI}`);
+	let sol = getSol(1000)
+	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${sol}&api_key=${nasaAPI}`);
 	let data = await response.json()
-	// return data;
-	console.log(data)
-	console.log(data.photos.length)
 	insertPhotos(data.photos);
 }
 
