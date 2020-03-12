@@ -23,36 +23,41 @@ let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 // 			to: +4146781466
 // 		})
 
-let insertPhotos = (photoData) => {
+let insertPhotos = (photoData, earthDate, sol) => {
 	console.log(photoData)
-	var photo = photoData[0].img_src;
-
+	var photo = photoData.img_src;
+	var roverName = `photo from ${photoData.rover.name}`;
+	var p = document.createElement("p")
+	p.innerHTML = `${roverName} on earth date: ${earthDate} & on sol: ${sol}`;
 	var img = document.createElement("IMAGE");
-	var roverName = `photo from ${photoData[0].rover.name}`;
 	// img.src = photo;
 	img.innerHTML = `<img src=${photo} alt=${roverName} />`;
-	// img.alt = roverName
+	p.appendChild(img);
+	img.alt = roverName
 	// img.setAttribute('src', photo)
 	// img.setAttribute('alt', roverName)
 	// console.log(img)
 	// console.log(document.querySelector(".photo"))
-	document.querySelector(".photo").appendChild(img);
+	document.querySelector(".photo-section").appendChild(p);
 }
 
-function displayInformation(){
-	
+function displayInformation() {
+
 }
 
 function getSol(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 
+//get Photo data, earth date, sol, photo
 let getPhoto = async function getMarsRoverAsync(e) {
 	let roverName = e.target.id
-	let sol = getSol(1000)
-	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${sol}&api_key=${nasaAPI}`);
+	let randomSol = getSol(1000)
+	let response = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${randomSol}&api_key=${nasaAPI}`);
 	let data = await response.json()
-	insertPhotos(data.photos);
+	let earthDate = data.photos[0].earth_date;
+	let sol = data.photos[0].sol;
+	insertPhotos(data.photos[0], earthDate, sol);
 }
 
 document.getElementById("spirit").addEventListener("click", getPhoto);
