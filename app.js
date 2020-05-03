@@ -20,7 +20,7 @@ let rovers = ['curiosity', 'spirit', 'opportunity', 'perserverance'];
 // 			body: 'HELLO, THIS IS IMAGE FROM MARS ROVER',
 // 			from: env.TWILIO_NUMBER,
 // 			mediaUrl: [data],
-// 			to: +4146781466
+// 			to: +555-555-5555;
 // 		})
 
 let insertPhotos = (photoData, earthDate, sol) => {
